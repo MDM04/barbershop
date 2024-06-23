@@ -1,7 +1,11 @@
+import Routers from "./router/router"
+
+
 const App =()=>{
   return (
-    <div>Avuá Barbearia</div>
-    
+    <div>
+      <Routers/>
+    </div>
   )
 }
 
