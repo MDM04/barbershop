@@ -3,24 +3,36 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const Div = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh; /* Garantir que ocupe 100% da altura da viewport */
+  background-color: rgb(243, 241, 108);
+`;
+
+const Main = styled.main`
+  flex: 1; /* Faz o conteúdo ocupar o espaço restante entre header e footer */
+  display: flex;
   flex-direction: column;
   align-items: center;
-  h1 {
-    font-size: 15px;
-  }
+  justify-content: center; /* Centralizar verticalmente */
+`;
+
+const H1 = styled.h1`
+  font-size: 20px;
+  color: #d37223;
 `;
 
 const Home = () => {
   return (
-    <Div>
-      <Header title="Contatos"/>
-      <h1>Avuá Barbearia</h1>
-      <Outlet/>
-      <Footer name="MDM Pro"/>
-    </Div>
+    <Container>
+      <Header title="Contatos" />
+      <Main>
+        <H1>Avuá Barbearia</H1>
+        <Outlet />
+      </Main>
+      <Footer name="MDM Pro" />
+    </Container>
   );
 };
 

@@ -1,3 +1,5 @@
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -12,7 +14,7 @@ const Label = styled.label`
   margin-bottom: 4px;
 `;
 
-const Input = styled.input`
+const Input = styled(DatePicker)`
   width: 100%;
   padding: 8px;
   margin-top: 4px;
@@ -29,31 +31,43 @@ const P = styled.p`
   margin-top: 4px;
 `;
 
-interface IInputNameProps {
+interface IFormDateInputProps {
+  register: any;
   id: string;
   placeholder: string;
-  register: any;
+  name: string;
   required: boolean;
   description: string;
   messageError?: any;
-  type?: string;
+  onChange?: (date: Date | null) => void;
 }
 
-const FormInput = ({
+const DateInput = ({
   id,
   placeholder,
-  register,
   description,
   messageError,
-  type = "text",
-}: IInputNameProps) => {
+  required,
+  register,
+  name,
+  onChange
+}: IFormDateInputProps) => {
   return (
     <Div>
       <Label htmlFor={id}>{description}</Label>
-      <Input type={type} id={id} placeholder={placeholder} {...register} />
+      <Input
+        id={id}
+        {...register}
+        placeholderText={placeholder}
+        required={required}
+        dateFormat={"dd/MM/yyyy"}
+        name={name}
+        selected={null}
+        onChange={onChange}
+      />
       {messageError && <P>{messageError}</P>}
     </Div>
   );
 };
 
-export default FormInput;
+export default DateInput;
