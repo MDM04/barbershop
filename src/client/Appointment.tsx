@@ -4,62 +4,65 @@ import { useHookFormMask } from 'use-mask-input';
 import FormInput from '../components/FormInput';
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery';
-import { Table } from 'antd';
+import {  Table } from 'antd';
 import 'antd/dist/reset.css';
 
 // Estilos do Container
 const Container = styled.div`
-  max-width: 100%;
+  max-width: 600px;
   width: 100%;
-  height: auto;
+  height: 500px;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
   padding: 10px;
   border-radius: 10px;
   background-color: rgb(238, 230, 119);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
 
   @media ${device.mobileS} {
-    padding: 5px;
+    padding: 10px;
+    max-width: 100%;
   }
 
   @media ${device.mobileM} {
-    padding: 10px;
+    padding: 15px;
+    max-width: 100%;
   }
 
   @media ${device.tablet} {
-    padding: 15px;
+    padding: 20px;
+    max-width: 90%;
   }
 
   @media ${device.laptop} {
-    padding: 20px;
+    padding: 25px;
+    max-width: 600px;
   }
 `;
 
 // Estilos do Título
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 25px;
   color: #007bff;
   text-align: center;
-  margin: 0 0 20px;
+  margin: 0px 0 80px;
 
   @media ${device.mobileS} {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   @media ${device.mobileM} {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   @media ${device.tablet} {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   @media ${device.laptop} {
-    font-size: 24px;
+    font-size: 22px;
   }
 `;
 
@@ -69,11 +72,11 @@ const Button = styled.button`
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
 
   &:hover {
     background-color: #0056b3;
@@ -95,13 +98,13 @@ const StyledTable = styled(Table)`
     background-color: #007bff;
     color: #f9f9f9;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .ant-table-tbody > tr > td {
     background-color: #09346d;
     color: #333;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .ant-table-tbody > tr:nth-child(odd) > td {
@@ -113,11 +116,11 @@ const StyledTable = styled(Table)`
   }
 
   .ant-table-cell {
-    padding: 8px;
+    padding: 12px;
   }
 
   .ant-table {
-    margin-top: 10px;
+    margin-top: 20px;
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
