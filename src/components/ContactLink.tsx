@@ -9,29 +9,12 @@ const A = styled.a`
   font-weight: 500;
   color: #030303;
   text-decoration: none;
-  transition: color 0.5s ease; /* Transição suave para a cor do texto */
+  transition: color 0.3s ease, border-bottom-color 0.3s ease; /* Transição suave para a cor do texto e a cor da borda inferior */
+  border-bottom: 2px solid transparent; /* Borda inferior transparente */
 
   &:hover {
     color: #022d6d; /* Mudança de cor ao passar o mouse */
-  }
-
-  /* Pseudo-elemento para o efeito "cometa" */
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -3px; /* Distância do "cometa" abaixo do texto */
-    left: 0;
-    width: 100%;
-    height: 2px; /* Altura do "cometa" */
-    background-color: rgb(0, 0, 0); /* Cor do "cometa" */
-    transform: scaleX(0); /* Inicia sem largura */
-    transform-origin: left; /* Origem da transformação */
-    transition: transform 0.5s ease; /* Transição suave para a largura */
-  }
-
-  &:hover::after {
-    transform: scaleX(1);
-    height: 3px; /* Expandir o "cometa" ao passar o mouse */
+    border-bottom: 2px solid #022d6d; /* Adicionar sublinhado ao passar o mouse */
   }
 `;
 
