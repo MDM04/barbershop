@@ -102,7 +102,7 @@ const StyledTable = styled(Table)`
   }
 
   .ant-table-tbody > tr > td {
-    background-color: #09346d;
+    background-color: #f9f9f9;
     color: #333;
     font-size: 14px;
   }
