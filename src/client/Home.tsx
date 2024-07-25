@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { device } from "../config/MediaQuery";
 import { useState } from "react";
+import AdminPage from "../admin/ServicesAdmin";
+
 
 // Estilos do Container
 const Container = styled.div`
@@ -118,6 +120,7 @@ const Home = () => {
     <Container>
       <Header title="Contatos" />
       <Title>Avuá Barbearia</Title>
+      <AdminPage/>
       <Main>
         {isButtonVisible ? (
           <StyledLink to={'/appointment'} onClick={handleButtonClick}>Clique Aqui ...</StyledLink>
