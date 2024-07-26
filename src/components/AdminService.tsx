@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { device } from '../config/MediaQuery';
+import { device } from '../config/MediaQuery'; // Ajuste o caminho conforme necessário
 
-// Estilos
+// Estilos do container principal
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+
   @media ${device.mobileS} {
     padding: 10px;
   }
@@ -25,10 +26,12 @@ const Container = styled.div`
   }
 `;
 
+// Estilos do título
 const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
+// Estilos do input
 const Input = styled.input`
   margin: 5px;
   padding: 8px;
@@ -37,6 +40,7 @@ const Input = styled.input`
   width: 200px;
 `;
 
+// Estilos do botão
 const Button = styled.button`
   margin: 5px;
   padding: 8px 16px;
@@ -51,6 +55,7 @@ const Button = styled.button`
   }
 `;
 
+// Estilos do botão de excluir
 const DeleteButton = styled(Button)`
   background-color: #dc3545;
 
@@ -59,6 +64,7 @@ const DeleteButton = styled(Button)`
   }
 `;
 
+// Estilos da tabela
 const Table = styled.table`
   width: 100%;
   max-width: 600px;
@@ -67,6 +73,7 @@ const Table = styled.table`
   background-color: white; /* Fundo da tabela */
 `;
 
+// Estilos do cabeçalho da tabela
 const TableHeader = styled.th`
   padding: 12px;
   background-color: #f4f4f4;
@@ -74,26 +81,41 @@ const TableHeader = styled.th`
   text-align: left;
 `;
 
+// Estilos das células da tabela
 const TableData = styled.td`
   padding: 12px;
   border: 1px solid #ddd;
 `;
 
+// Estilos do container dos rádios
 const RadioContainer = styled.div`
   margin-top: 20px;
 `;
 
+// Estilos dos labels dos rádios
 const RadioLabel = styled.label`
   margin-right: 10px;
 `;
 
+// Interface para o serviço
+interface Service {
+  name: string;
+  price: number;
+}
+
 const AdminServicePage = () => {
-  const [services, setServices] = useState<{ name: string; price: number }[]>([]);
+  // Estado para a lista de serviços
+  const [services, setServices] = useState<Service[]>([]);
+  // Estado para o novo serviço a ser adicionado
   const [newService, setNewService] = useState('');
+  // Estado para o novo preço do serviço
   const [newPrice, setNewPrice] = useState<number | ''>('');
+  // Estado para mensagens de erro
   const [error, setError] = useState('');
+  // Estado para controle de visibilidade da tabela
   const [showTable, setShowTable] = useState(true);
 
+  // Carrega os serviços do localStorage ao montar o componente
   useEffect(() => {
     const storedServices = localStorage.getItem('services');
     if (storedServices) {
@@ -101,6 +123,7 @@ const AdminServicePage = () => {
     }
   }, []);
 
+  // Adiciona um novo serviço à lista
   const handleAddService = () => {
     if (!newService || newPrice === '') {
       setError('Todos os campos são obrigatórios.');
@@ -121,6 +144,7 @@ const AdminServicePage = () => {
     setError('');
   };
 
+  // Remove um serviço da lista
   const handleDeleteService = (index: number) => {
     const updatedServices = services.filter((_, i) => i !== index);
     setServices(updatedServices);
@@ -131,22 +155,27 @@ const AdminServicePage = () => {
     <Container>
       <Title>Serviços</Title>
       <div>
+        {/* Campo de entrada para o nome do serviço */}
         <Input
           type="text"
           placeholder="Nome do Serviço"
           value={newService}
           onChange={(e) => setNewService(e.target.value)}
         />
+        {/* Campo de entrada para o preço do serviço */}
         <Input
           type="number"
           placeholder="Preço"
           value={newPrice === '' ? '' : newPrice}
           onChange={(e) => setNewPrice(e.target.value === '' ? '' : Number(e.target.value))}
         />
+        {/* Botão para adicionar um novo serviço */}
         <Button onClick={handleAddService}>Adicionar Serviço</Button>
+        {/* Exibição de mensagem de erro */}
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
       <RadioContainer>
+        {/* Rádio para mostrar a tabela */}
         <RadioLabel>
           <input
             type="radio"
@@ -155,6 +184,7 @@ const AdminServicePage = () => {
           />
           Mostrar Tabela
         </RadioLabel>
+        {/* Rádio para ocultar a tabela */}
         <RadioLabel>
           <input
             type="radio"
@@ -164,6 +194,7 @@ const AdminServicePage = () => {
           Ocultar Tabela
         </RadioLabel>
       </RadioContainer>
+      {/* Exibição condicional da tabela de serviços */}
       {showTable && (
         <Table>
           <thead>

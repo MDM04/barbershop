@@ -9,27 +9,23 @@ const Div = styled.div`
   flex-direction: column;
 `;
 
-const Label = styled.label`
-  font-size: 14px;
-  margin-bottom: 4px;
-`;
 
 
 interface IBirthdayDatePickerProps {
-  description: string;
+  placeholder: string
   selectedDate: Date | null;
   onChange: (date: Date | null) => void;
 }
 
 const BirthdayDatePicker = ({
-  description,
+  placeholder,
   selectedDate,
   onChange,
 }: IBirthdayDatePickerProps) => {
   return (
     <Div>
-      <Label htmlFor="birthdayDate">{description}</Label>
       <DatePicker
+      placeholderText={placeholder}
         selected={selectedDate}
         onChange={onChange}
         showYearDropdown

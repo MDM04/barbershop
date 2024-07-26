@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery'; // Ajuste o caminho conforme necessário
 
-// Estilos
+// Estilos do container principal
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,6 +10,7 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+// Wrapper para os inputs e botão
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -18,6 +19,7 @@ const InputWrapper = styled.div`
   max-width: 300px;
 `;
 
+// Estilos do input
 const Input = styled.input`
   flex: 1;
   padding: 8px;
@@ -51,6 +53,7 @@ const Input = styled.input`
   }
 `;
 
+// Estilos do botão
 const Button = styled.button`
   padding: 8px 16px;
   border: none;
@@ -64,6 +67,7 @@ const Button = styled.button`
   }
 `;
 
+// Estilos do botão de excluir
 const DeleteButton = styled.button`
   padding: 4px 8px;
   border: none;
@@ -78,6 +82,7 @@ const DeleteButton = styled.button`
   }
 `;
 
+// Estilos da tabela
 const Table = styled.table`
   width: 100%;
   max-width: 300px;
@@ -101,6 +106,7 @@ const Table = styled.table`
   }
 `;
 
+// Estilos do cabeçalho da tabela
 const TableHeader = styled.th`
   border: 1px solid #ddd;
   padding: 8px;
@@ -108,12 +114,14 @@ const TableHeader = styled.th`
   text-align: left;
 `;
 
+// Estilos das células da tabela
 const TableCell = styled.td`
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 `;
 
+// Estilos das linhas da tabela
 const TableRow = styled.tr`
   background-color: #f9f9f9;
 
@@ -122,12 +130,14 @@ const TableRow = styled.tr`
   }
 `;
 
+// Wrapper para os radios de visibilidade da tabela
 const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
   margin: 8px 0;
 `;
 
+// Estilos dos labels dos radios
 const RadioLabel = styled.label`
   margin-left: 8px;
   font-size: 14px;
@@ -149,6 +159,7 @@ const RadioLabel = styled.label`
   }
 `;
 
+// Estilos da mensagem de erro
 const ErrorMessage = styled.p`
   font-size: 12px;
   color: rgb(221, 58, 58);
@@ -171,17 +182,22 @@ const ErrorMessage = styled.p`
   }
 `;
 
-// Interface
+// Interface para Barbeiro
 interface Barber {
   name: string;
 }
 
 const Admin = () => {
+  // Estado para a lista de barbeiros
   const [barbers, setBarbers] = useState<Barber[]>([]);
+  // Estado para o novo barbeiro a ser adicionado
   const [newBarber, setNewBarber] = useState('');
+  // Estado para mensagens de erro
   const [error, setError] = useState('');
-  const [showTable, setShowTable] = useState(true); // Estado para controle do display da tabela
+  // Estado para controle de visibilidade da tabela
+  const [showTable, setShowTable] = useState(true);
 
+  // Carrega os barbeiros do localStorage ao montar o componente
   useEffect(() => {
     const storedBarbers = localStorage.getItem('barbers');
     if (storedBarbers) {
@@ -189,6 +205,7 @@ const Admin = () => {
     }
   }, []);
 
+  // Adiciona um novo barbeiro à lista
   const handleAddBarber = () => {
     if (newBarber.trim() === '') {
       setError('Nome do barbeiro não pode estar vazio.');
@@ -202,6 +219,7 @@ const Admin = () => {
     setError('');
   };
 
+  // Remove um barbeiro da lista
   const handleDeleteBarber = (nameToDelete: string) => {
     const updatedBarbers = barbers.filter(barber => barber.name !== nameToDelete);
     setBarbers(updatedBarbers);

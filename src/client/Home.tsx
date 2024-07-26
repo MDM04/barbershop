@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import { device } from "../config/MediaQuery";
 import { useState } from "react";
 import AdminPage from "../admin/ServicesAdmin";
+import FormWithTable from "./FormClient";
 
 
 // Estilos do Container
@@ -121,6 +122,7 @@ const Home = () => {
       <Header title="Contatos" />
       <Title>Avuá Barbearia</Title>
       <AdminPage/>
+      <FormWithTable/>
       <Main>
         {isButtonVisible ? (
           <StyledLink to={'/appointment'} onClick={handleButtonClick}>Clique Aqui ...</StyledLink>
