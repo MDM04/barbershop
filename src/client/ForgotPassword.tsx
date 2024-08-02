@@ -121,7 +121,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <Container>
-      <MainTitle>Barbearia XYZ</MainTitle>
+      <MainTitle>Avuá Barbearia</MainTitle>
       <SubTitle>Recuperação de Senha</SubTitle>
       <Form onSubmit={handleSubmit}>
         <input
