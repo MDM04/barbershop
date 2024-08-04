@@ -5,15 +5,25 @@ import HomePageClient from "../client/HomePage";
 import LoginPage from "../client/LoginPage";
 import SignUpPage from "../client/SignUpPage"; // Importar o novo componente
 import ForgotPasswordPage from "../client/ForgotPassword";
+import ResetPasswordPage from "../client/ResetPassword";
+import WelcomePage from "../client/Welcome";
+import PaymentPage from "../client/PaymentPage";
+import CreditCard from "../client/CreditCard";
 
 const Routers = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePageClient />} /> {/* Rota para a HomePageClient */}
-        <Route path="/login" element={<LoginPage />} /> {/* Rota para a página de login */}
-        <Route path="/register" element={<SignUpPage />} /> {/* Nova rota para a página de cadastro */}
-       <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+        <Route path="/" element={<HomePageClient />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<SignUpPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/payment-method" element={<PaymentPage />} />
+        <Route path="/credit-card" element={<CreditCard />} />
+
+
         <Route path="appointment" element={<Appointment />} />
         <Route path="payment" element={<Payment />} />
       </Routes>

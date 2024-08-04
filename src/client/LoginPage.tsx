@@ -1,7 +1,8 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importando ícones
 import { device } from '../config/MediaQuery'; // Supondo que você tenha um arquivo para device configurations
-import { useState } from 'react';
 
 // Estilos do container principal
 const Container = styled.div`
@@ -32,7 +33,7 @@ const MainTitle = styled.h1`
   font-size: 2rem;
   margin-bottom: 70px;
   
-  color:#007bff ;
+  color:#007bff;
 
   @media ${device.mobileS} {
     font-size: 1.5rem;
@@ -97,6 +98,16 @@ const Form = styled.form`
   }
 `;
 
+// Estilos para o ícone de alternar visibilidade da senha
+const TogglePassword = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #007bff;
+  cursor: pointer;
+`;
+
 // Estilos para links adicionais
 const LinkContainer = styled.div`
   margin-top: 15px;
@@ -120,14 +131,21 @@ const ErrorText = styled.p`
   margin: 10px 0;
 `;
 
+const InputWrapper = styled.div`
+  position: relative;
+`;
+
+// Componente funcional de LoginPage
 const LoginPage = () => {
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState(''); // Estado para armazenar o nome do usuário
+  const [password, setPassword] = useState(''); // Estado para armazenar a senha
+  const [error, setError] = useState(''); // Estado para armazenar mensagens de erro
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
 
   // Simular dados armazenados no localStorage
   const storedUser = JSON.parse(localStorage.getItem('userData') || '{}');
 
+  // Função chamada ao submeter o formulário
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -136,7 +154,7 @@ const LoginPage = () => {
       setError('');
       // Redirecionar ou realizar outras ações após login bem-sucedido
       // Exemplo: redirecionar para a página inicial
-      window.location.href = '/';
+      window.location.href = '/welcome';
     } else {
       setError('Usuário ou senha inválidos.');
     }
@@ -154,12 +172,17 @@ const LoginPage = () => {
           value={name} 
           onChange={(e) => setName(e.target.value)} 
         />
-        <input 
-          type="password" 
-          placeholder="Senha" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-        />
+        <InputWrapper>
+          <input 
+            type={showPassword ? 'text' : 'password'} // Alterna o tipo do input com base no estado
+            placeholder="Senha" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
+          <TogglePassword onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Alterna o ícone baseado no estado */}
+          </TogglePassword>
+        </InputWrapper>
         <button type="submit">Entrar</button>
       </Form>
       <LinkContainer>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery';
-import Client from '../components/SelectClient';
+import Client from './BarberSection';
 
 const Container = styled.div`
   display: flex;

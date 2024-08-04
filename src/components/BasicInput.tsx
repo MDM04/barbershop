@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const DivContainer = styled.div`
-  margin: 0px;
+const InputWrapper = styled.div`
+  margin-bottom: 15px;
 `;
 
 const Input = styled.input`
@@ -10,12 +10,13 @@ const Input = styled.input`
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  margin-bottom: 5px;
 `;
 
-const P = styled.p`
-    color: rgb(238, 40, 40);
-    font-size: 14px;
-`
+const ErrorText = styled.p`
+  color: rgb(238, 40, 40);
+  font-size: 14px;
+`;
 
 interface IBasicInputProps {
   type: string;
@@ -35,7 +36,7 @@ const BasicInput = ({
   onFocus,
 }: IBasicInputProps) => {
   return (
-    <DivContainer>
+    <InputWrapper>
       <Input
         type={type}
         name={name}
@@ -43,8 +44,8 @@ const BasicInput = ({
         {...register}
         onFocus={onFocus}
       />
-      {messageError && <P>{messageError}</P>}
-    </DivContainer>
+      {messageError && <ErrorText>{messageError}</ErrorText>}
+    </InputWrapper>
   );
 };
 

@@ -146,7 +146,7 @@ interface Barber {
   name: string;
 }
 
-const Client = () => {
+const BarberSelectionPage = () => {
   const [barbers, setBarbers] = useState<Barber[]>([]);
   const [selectedBarber, setSelectedBarber] = useState('');
   const [error, setError] = useState('');
@@ -194,4 +194,4 @@ const Client = () => {
   );
 };
 
-export default Client;
+export default BarberSelectionPage;

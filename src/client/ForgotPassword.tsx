@@ -1,10 +1,9 @@
 // src/pages/ForgotPasswordPage.tsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { device } from '../config/MediaQuery'; // Supondo que você tenha um arquivo para device configurations
+import { Link, useNavigate } from 'react-router-dom';
+import { device } from '../config/MediaQuery';
 
-// Estilos do container principal
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,10 +27,9 @@ const Container = styled.div`
   }
 `;
 
-// Estilos do título principal
 const MainTitle = styled.h1`
   font-size: 2rem;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 
   @media ${device.mobileS} {
     font-size: 1.5rem;
@@ -46,24 +44,6 @@ const MainTitle = styled.h1`
   }
 `;
 
-const SubTitle = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 30px;
-
-  @media ${device.mobileS} {
-    font-size: 1.25rem;
-  }
-
-  @media ${device.tablet} {
-    font-size: 1.35rem;
-  }
-
-  @media ${device.laptop} {
-    font-size: 1.55rem;
-  }
-`;
-
-// Estilos do formulário
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -93,7 +73,6 @@ const Form = styled.form`
   }
 `;
 
-// Estilos para links adicionais
 const LinkContainer = styled.div`
   margin-top: 15px;
   text-align: center;
@@ -110,32 +89,43 @@ const LinkContainer = styled.div`
   }
 `;
 
-const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState('');
+// Componente funcional ForgotPasswordPage
+const ForgotPasswordPage= () => {
+  const [email, setEmail] = useState(''); // Estado para armazenar o e-mail digitado
+  const [message, setMessage] = useState(''); // Estado para armazenar mensagens de erro ou sucesso
+  const navigate = useNavigate(); // Hook para navegação
 
+  // Função chamada ao submeter o formulário
   const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // Lógica para recuperação de senha
-    alert('Link de recuperação enviado para o seu email.');
+    event.preventDefault(); // Previne o comportamento padrão do formulário
+    
+    // Verifica se o e-mail está presente no localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    
+    if (userData.email === email) {
+      // Redireciona para a página de redefinição de senha com um token fictício
+      navigate(`/reset-password?token=mock-token`);
+    } else {
+      setMessage('Email não encontrado.'); // Exibe mensagem de erro se o e-mail não for encontrado
+    }
   };
-
-  return (
+     return (
     <Container>
       <MainTitle>Avuá Barbearia</MainTitle>
-      <SubTitle>Recuperação de Senha</SubTitle>
       <Form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Digite seu e-mail"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)} // Atualiza o estado do e-mail
           required
         />
         <button type="submit">Enviar Link de Recuperação</button>
       </Form>
       <LinkContainer>
-        <Link to="/login">Voltar para o Login</Link>
+        <Link to="/login">Voltar para o Login</Link> {/* Link para voltar à página de login */}
       </LinkContainer>
+      {message && <p>{message}</p>} {/* Exibe a mensagem de erro ou sucesso, se houver */}
     </Container>
   );
 };
