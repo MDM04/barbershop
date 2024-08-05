@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Atualizado para useNavigate
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery';
 
@@ -9,7 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  
+
   @media ${device.mobileS} {
     padding: 10px;
   }
@@ -27,7 +27,7 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
@@ -130,18 +130,29 @@ const DetailLine = styled.p`
   }
 `;
 
+// Interface
 interface Barber {
   name: string;
 }
 
+interface Service {
+  name: string;
+  price: number;
+  priceMonthly?: number;
+  priceQuarterly?: number;
+  priceSemiannually?: number;
+  priceAnnually?: number;
+}
+
 const ServiceSelectionPage = () => {
-  const [services, setServices] = useState<{ name: string; price: number }[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
   const [barbers, setBarbers] = useState<Barber[]>([]);
   const [selectedService, setSelectedService] = useState<string>('');
+  const [selectedServiceType, setSelectedServiceType] = useState<string>('');
   const [selectedBarber, setSelectedBarber] = useState<string>('');
   const [showDetails, setShowDetails] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const navigate = useNavigate(); // Atualizado para useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedServices = localStorage.getItem('services');
@@ -159,6 +170,12 @@ const ServiceSelectionPage = () => {
     setError('');
   };
 
+  const handleSelectServiceType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedServiceType(event.target.value);
+    setSelectedService('');
+    setError('');
+  };
+
   const handleSelectBarber = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBarber(event.target.value);
     setError('');
@@ -170,7 +187,41 @@ const ServiceSelectionPage = () => {
     } else {
       localStorage.setItem('selectedService', selectedService);
       localStorage.setItem('selectedBarber', selectedBarber);
-      navigate('/payment-method'); // Atualizado para navigate
+      navigate('/payment-method');
+    }
+  };
+
+  const getServicePrice = (service: Service) => {
+    switch (selectedServiceType) {
+      case 'daily':
+        return service.price.toFixed(2);
+      case 'monthly':
+        return service.priceMonthly ? service.priceMonthly.toFixed(2) : 'N/A';
+      case 'quarterly':
+        return service.priceQuarterly ? service.priceQuarterly.toFixed(2) : 'N/A';
+      case 'semiannually':
+        return service.priceSemiannually ? service.priceSemiannually.toFixed(2) : 'N/A';
+      case 'annually':
+        return service.priceAnnually ? service.priceAnnually.toFixed(2) : 'N/A';
+      default:
+        return 'N/A';
+    }
+  };
+
+  const convertServiceType = (type: string) => {
+    switch (type) {
+      case 'daily':
+        return 'Diário';
+      case 'monthly':
+        return 'Mensal';
+      case 'quarterly':
+        return 'Trimestral';
+      case 'semiannually':
+        return 'Semestral';
+      case 'annually':
+        return 'Anual';
+      default:
+        return 'Desconhecido';
     }
   };
 
@@ -180,16 +231,24 @@ const ServiceSelectionPage = () => {
   return (
     <Container>
       <Title>Seleção de Serviços</Title>
-      <Select value={selectedService} onChange={handleSelectService} placeholder-arial="Escolha um serviço">
+      <Select value={selectedServiceType} onChange={handleSelectServiceType}>
+        <option value="" disabled>Escolha um plano</option>
+        <option value="daily">Diário</option>
+        <option value="monthly">Mensal</option>
+        <option value="quarterly">Trimestral</option>
+        <option value="semiannually">Semestral</option>
+        <option value="annually">Anual</option>
+      </Select>
+      <Select value={selectedService} onChange={handleSelectService}>
         <option value="" disabled>Selecione um serviço</option>
         {services.map((service, index) => (
           <option key={index} value={service.name}>
-            {service.name} - R${service.price.toFixed(2)}
+            {service.name} - R${getServicePrice(service)}
           </option>
         ))}
       </Select>
-      <Select value={selectedBarber} onChange={handleSelectBarber} placeholder-arial="Escolha um barbeiro">
-        <option value="" disabled>Selecione um barbeiro</option>
+      <Select value={selectedBarber} onChange={handleSelectBarber}>
+        <option value="" disabled>Barbeiro</option>
         {barbers.map((barber, index) => (
           <option key={index} value={barber.name}>
             {barber.name}
@@ -204,7 +263,8 @@ const ServiceSelectionPage = () => {
       {showDetails && selectedServiceDetails && selectedBarberDetails && (
         <ServiceDetails>
           <DetailLine><strong>Serviço:</strong> {selectedServiceDetails.name}</DetailLine>
-          <DetailLine><strong>Preço:</strong> R${selectedServiceDetails.price.toFixed(2)}</DetailLine>
+          <DetailLine><strong>Preço:</strong> R${getServicePrice(selectedServiceDetails)}</DetailLine>
+          <DetailLine><strong>Plano escolhido:</strong> {convertServiceType(selectedServiceType)}</DetailLine>
           <DetailLine><strong>Barbeiro:</strong> {selectedBarberDetails.name}</DetailLine>
         </ServiceDetails>
       )}

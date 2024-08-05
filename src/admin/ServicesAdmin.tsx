@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { device } from "../config/MediaQuery";
-import Admin from "../components/SelecAdmin";
-import AdminServicePage from "../components/AdminService";
+import AdminServicePage from "./AdminService";
+import SelectBarbers from "./SelectBarbers";
 
 const Container = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ const AdminPage = () => (
     <Title>Serviços e Barbeiros</Title>
 
     <AdminServicePage />
-    <Admin />
+    <SelectBarbers />
   </Container>
 );
 

@@ -29,8 +29,8 @@ const Container = styled.div`
 
 // Estilos do título principal
 const MainTitle = styled.h1`
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  margin-bottom: 40px;
 
   @media ${device.mobileS} {
     font-size: 1.5rem;
@@ -41,7 +41,7 @@ const MainTitle = styled.h1`
   }
 
   @media ${device.laptop} {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 `;
 
@@ -51,7 +51,7 @@ const UserGreeting = styled.div`
   top: 20px;
   right: 20px;
   font-size: 1.5rem;
-  color: #27292b;
+  color: #090a0a;
 
 
   @media ${device.mobileS} {

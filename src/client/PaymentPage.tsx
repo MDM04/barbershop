@@ -176,12 +176,14 @@ const PaymentPage = () => {
     const selectedService = localStorage.getItem('selectedService');
     const selectedBarber = localStorage.getItem('selectedBarber');
     const services = localStorage.getItem('services');
+    
     if (selectedService && services) {
       const serviceList = JSON.parse(services) as ServiceDetailsType[];
       const foundService = serviceList.find((s: ServiceDetailsType) => s.name === selectedService);
       setService(foundService || null);
-      setBarber(selectedBarber);
     }
+    
+    setBarber(selectedBarber);
   }, []);
 
   const handlePaymentChange = (method: string) => {
@@ -198,7 +200,7 @@ const PaymentPage = () => {
   return (
     <Container>
       <Title>Forma de Pagamento</Title>
-      {service && barber && (
+      {service && barber ? (
         <>
           <ServiceDetails>
             <DetailLine><strong>Serviço:</strong> {service.name}</DetailLine>
@@ -222,6 +224,8 @@ const PaymentPage = () => {
           </PaymentOption>
           <BackLink onClick={handleBack}>Voltar para a página anterior</BackLink>
         </>
+      ) : (
+        <p>Carregando informações...</p>
       )}
     </Container>
   );

@@ -187,7 +187,7 @@ interface Barber {
   name: string;
 }
 
-const Admin = () => {
+const SelectBarbers = () => {
   // Estado para a lista de barbeiros
   const [barbers, setBarbers] = useState<Barber[]>([]);
   // Estado para o novo barbeiro a ser adicionado
@@ -281,4 +281,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default SelectBarbers;
