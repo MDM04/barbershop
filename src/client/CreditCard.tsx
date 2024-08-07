@@ -1,14 +1,15 @@
 import styled from 'styled-components';
-import { useState, FocusEvent } from 'react';
+import { useState, FocusEvent, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Cards, { Focused } from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import BasicInput from '../components/BasicInput';
 import { useHookFormMask } from 'use-mask-input';
-import { device } from '../config/MediaQuery'; // Certifique-se de ajustar o caminho conforme necessário
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { device } from '../config/MediaQuery';
+import { useNavigate } from 'react-router-dom';
+import ServiceDetailsTable from './ServiceDetailsTable'; // Importe o ServiceDetailsTable
 
-// Estilos do container principal
+// Estilos
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,7 +60,7 @@ const Form = styled.form`
   background: linear-gradient(135deg, #FFD700 0%, #FFFACD -10%, #FFD700 500%);
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const SubmitButton = styled.button`
@@ -90,10 +91,14 @@ const BackButton = styled.button`
   }
 `;
 
-// Componente funcional PaymentForm
+
+// Componente funcional CreditCard
 const CreditCard = () => {
   const [focused, setFocused] = useState<Focused | undefined>(undefined);
-  const navigate = useNavigate(); // Inicializa o useNavigate
+  const [service, setService] = useState<any>(null); // Ajustar o tipo conforme necessário
+  const [barber, setBarber] = useState<string | null>(null);
+  const [serviceType, setServiceType] = useState<string | null>(null); // Adiciona o estado para o tipo de serviço
+  const navigate = useNavigate();
 
   const {
     register,
@@ -109,6 +114,22 @@ const CreditCard = () => {
   const watchFields = watch(['number', 'expiry', 'cvc', 'name']);
   const registerWithMask = useHookFormMask(register);
 
+  useEffect(() => {
+    const selectedService = localStorage.getItem('selectedService');
+    const selectedBarber = localStorage.getItem('selectedBarber');
+    const selectedServiceType = localStorage.getItem('selectedServiceType');
+    const services = localStorage.getItem('services');
+    
+    if (selectedService && services) {
+      const serviceList = JSON.parse(services) as any[];
+      const foundService = serviceList.find((s: any) => s.name === selectedService);
+      setService(foundService || null);
+    }
+    
+    setBarber(selectedBarber);
+    setServiceType(selectedServiceType); // Define o tipo de serviço
+  }, []);
+
   const handleInputFocus = (evt: FocusEvent<HTMLInputElement>) => {
     setFocused(evt.target.name as Focused);
   };
@@ -120,68 +141,80 @@ const CreditCard = () => {
   return (
     <Container>
       <Title>Cartão</Title>
-      <Cards
-        number={watchFields[0] || ''}
-        expiry={watchFields[1] || ''}
-        cvc={watchFields[2] || ''}
-        name={watchFields[3] || ''}
-        focused={focused}
-      />
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <BasicInput
-          type="text"
-          name="number"
-          placeholder="Número do cartão"
-          register={registerWithMask('number', ['9999 9999 9999 9999'], {
-            required: 'Campo obrigatório',
-            validate: (value) =>
-              value.replace(/[^\d]/g, '').length === 16 ||
-              'O número do cartão deve ter exatamente 16 caracteres',
-          })}
-          onFocus={handleInputFocus}
-          messageError={errors.number?.message}
-        />
+      {service && barber ? (
+        <>
 
-        <BasicInput
-          type="text"
-          name="expiry"
-          placeholder="Data de Validade"
-          register={registerWithMask('expiry', ['99/99'], {
-            required: 'Campo obrigatório',
-            validate: (value) =>
-              value.replace(/[^\d]/g, '').length === 4 ||
-              'A data de validade deve ter exatamente 4 caracteres',
-          })}
-          onFocus={handleInputFocus}
-          messageError={errors.expiry?.message}
-        />
+          <ServiceDetailsTable
+            service={service}
+            selectedServiceType={serviceType} // Passa o tipo de serviço selecionado
+            barber={barber}
+          />
+          <Cards
+            number={watchFields[0] || ''}
+            expiry={watchFields[1] || ''}
+            cvc={watchFields[2] || ''}
+            name={watchFields[3] || ''}
+            focused={focused}
+          />
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <BasicInput
+              type="text"
+              name="number"
+              placeholder="Número do cartão"
+              register={registerWithMask('number', ['9999 9999 9999 9999'], {
+                required: 'Campo obrigatório',
+                validate: (value) =>
+                  value.replace(/[^\d]/g, '').length === 16 ||
+                  'O número do cartão deve ter exatamente 16 caracteres',
+              })}
+              onFocus={handleInputFocus}
+              messageError={errors.number?.message}
+            />
 
-        <BasicInput
-          type="text"
-          name="cvc"
-          placeholder="CVC"
-          register={registerWithMask('cvc', ['999'], {
-            required: 'Campo obrigatório',
-            validate: (value) =>
-              value.replace(/[^\d]/g, '').length === 3 ||
-              'O CVC deve ter exatamente 3 caracteres',
-          })}
-          onFocus={handleInputFocus}
-          messageError={errors.cvc?.message}
-        />
+            <BasicInput
+              type="text"
+              name="expiry"
+              placeholder="Data de Validade"
+              register={registerWithMask('expiry', ['99/99'], {
+                required: 'Campo obrigatório',
+                validate: (value) =>
+                  value.replace(/[^\d]/g, '').length === 4 ||
+                  'A data de validade deve ter exatamente 4 caracteres',
+              })}
+              onFocus={handleInputFocus}
+              messageError={errors.expiry?.message}
+            />
 
-        <BasicInput
-          type="text"
-          name="name"
-          placeholder="Nome no Cartão"
-          register={register('name', { required: 'Campo obrigatório' })}
-          onFocus={handleInputFocus}
-          messageError={errors.name?.message}
-        />
+            <BasicInput
+              type="text"
+              name="cvc"
+              placeholder="CVC"
+              register={registerWithMask('cvc', ['999'], {
+                required: 'Campo obrigatório',
+                validate: (value) =>
+                  value.replace(/[^\d]/g, '').length === 3 ||
+                  'O CVC deve ter exatamente 3 caracteres',
+              })}
+              onFocus={handleInputFocus}
+              messageError={errors.cvc?.message}
+            />
 
-        <SubmitButton type="submit">Confirmar</SubmitButton>
-        <BackButton type="button" onClick={handleBack}>Voltar</BackButton>
-      </Form>
+            <BasicInput
+              type="text"
+              name="name"
+              placeholder="Nome no Cartão"
+              register={register('name', { required: 'Campo obrigatório' })}
+              onFocus={handleInputFocus}
+              messageError={errors.name?.message}
+            />
+
+            <SubmitButton type="submit">Confirmar</SubmitButton>
+            <BackButton type="button" onClick={handleBack}>Voltar</BackButton>
+          </Form>
+        </>
+      ) : (
+        <p>Carregando informações...</p>
+      )}
     </Container>
   );
 };

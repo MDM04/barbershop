@@ -9,6 +9,7 @@ import ResetPasswordPage from "../client/ResetPassword";
 import WelcomePage from "../client/Welcome";
 import PaymentPage from "../client/PaymentPage";
 import CreditCard from "../client/CreditCard";
+import PixPaymentPage from "../client/PixPayment";
 
 const Routers = () => {
   return (
@@ -22,7 +23,7 @@ const Routers = () => {
         <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/payment-method" element={<PaymentPage />} />
         <Route path="/credit-card" element={<CreditCard />} />
-
+        <Route path="/pix-payment" element={<PixPaymentPage />} />
 
         <Route path="appointment" element={<Appointment />} />
         <Route path="payment" element={<Payment />} />

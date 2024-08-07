@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery';
+import ServiceDetailsTable from './ServiceDetailsTable';
 
 // Estilos
 const Container = styled.div`
@@ -100,37 +101,7 @@ const Button = styled.button`
   }
 `;
 
-const ServiceDetails = styled.div`
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #0a0a0a;
-  border-radius: 4px;
-  width: 100%;
-  max-width: 300px;
-`;
-
-const DetailLine = styled.p`
-  font-size: 14px;
-  margin: 5px 0;
-
-  @media ${device.mobileS} {
-    font-size: 12px;
-  }
-
-  @media ${device.mobileM} {
-    font-size: 12px;
-  }
-
-  @media ${device.mobileL} {
-    font-size: 13px;
-  }
-
-  @media ${device.tablet} {
-    font-size: 14px;
-  }
-`;
-
-// Interface
+// Interfaces
 interface Barber {
   name: string;
 }
@@ -185,8 +156,13 @@ const ServiceSelectionPage = () => {
     if (!selectedService || !selectedBarber) {
       setError('Você deve selecionar um serviço e um barbeiro.');
     } else {
+      const selectedServiceDetails = services.find(service => service.name === selectedService);
+      const servicePrice = selectedServiceDetails ? getServicePrice(selectedServiceDetails) : 'N/A';
+
       localStorage.setItem('selectedService', selectedService);
       localStorage.setItem('selectedBarber', selectedBarber);
+      localStorage.setItem('selectedServiceType', selectedServiceType); // Salvar o plano escolhido
+      localStorage.setItem('servicePrice', servicePrice); // Salvar o preço do serviço
       navigate('/payment-method');
     }
   };
@@ -205,23 +181,6 @@ const ServiceSelectionPage = () => {
         return service.priceAnnually ? service.priceAnnually.toFixed(2) : 'N/A';
       default:
         return 'N/A';
-    }
-  };
-
-  const convertServiceType = (type: string) => {
-    switch (type) {
-      case 'daily':
-        return 'Diário';
-      case 'monthly':
-        return 'Mensal';
-      case 'quarterly':
-        return 'Trimestral';
-      case 'semiannually':
-        return 'Semestral';
-      case 'annually':
-        return 'Anual';
-      default:
-        return 'Desconhecido';
     }
   };
 
@@ -261,12 +220,11 @@ const ServiceSelectionPage = () => {
         {showDetails ? 'Ocultar Detalhes' : 'Mostrar Detalhes'}
       </Button>
       {showDetails && selectedServiceDetails && selectedBarberDetails && (
-        <ServiceDetails>
-          <DetailLine><strong>Serviço:</strong> {selectedServiceDetails.name}</DetailLine>
-          <DetailLine><strong>Preço:</strong> R${getServicePrice(selectedServiceDetails)}</DetailLine>
-          <DetailLine><strong>Plano escolhido:</strong> {convertServiceType(selectedServiceType)}</DetailLine>
-          <DetailLine><strong>Barbeiro:</strong> {selectedBarberDetails.name}</DetailLine>
-        </ServiceDetails>
+        <ServiceDetailsTable
+          service={selectedServiceDetails}
+          selectedServiceType={selectedServiceType} // Passa o tipo de serviço selecionado
+          barber={selectedBarberDetails.name}
+        />
       )}
     </Container>
   );

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery';
 import { useNavigate } from 'react-router-dom';
-import ServiceDetailsTable from './ServiceDetailsTable'; // Importa o componente
+import ServiceDetailsTable from './ServiceDetailsTable'; // Importe o ServiceDetailsTable
 
 // Estilos
 const Container = styled.div`
@@ -77,31 +77,51 @@ const Subtitle = styled.h2`
   }
 `;
 
-const PaymentOption = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const PaymentDetails = styled.div`
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #201f1f;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+
+  @media ${device.mobileS} {
+    padding: 15px;
+  }
+
+  @media ${device.mobileM} {
+    padding: 18px;
+  }
+
+  @media ${device.mobileL} {
+    padding: 20px;
+  }
+
+  @media ${device.tablet} {
+    padding: 22px;
+  }
 `;
 
-// Filtra props que não devem ser passadas para o DOM
-const PaymentButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['active'].includes(prop),
-})<{ active: boolean }>`
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: ${({ active }) => (active ? '#181818' : '#19191a')};
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%; /* Faz com que ambos os botões tenham a mesma largura */
-  max-width: 200px; /* Limita a largura máxima dos botões */
+const DetailLine = styled.p`
+  font-size: 17px;
+  margin: 10px 0;
+  color: #000000;
 
-  &:hover {
-    background-color: ${({ active }) => (active ? '#0056b3' : '#5a6268')};
+  @media ${device.mobileS} {
+    font-size: 14px;
+  }
+
+  @media ${device.mobileM} {
+    font-size: 15px;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 16px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 17px;
   }
 `;
 
@@ -116,23 +136,22 @@ const BackLink = styled.a`
   }
 `;
 
-// Interface para as props do PaymentPage
+// Interface
 interface ServiceDetailsType {
   name: string;
   price: number;
 }
 
-const PaymentPage = () => {
+const PixPaymentPage = () => {
   const [service, setService] = useState<ServiceDetailsType | null>(null);
   const [barber, setBarber] = useState<string | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
-  const [selectedServiceType, setSelectedServiceType] = useState<string | null>(null);
+  const [serviceType, setServiceType] = useState<string | null>(null); // Adiciona o estado para o tipo de serviço
   const navigate = useNavigate();
 
   useEffect(() => {
     const selectedService = localStorage.getItem('selectedService');
     const selectedBarber = localStorage.getItem('selectedBarber');
-    const selectedServiceType = localStorage.getItem('selectedServiceType'); // Recupera o tipo de plano escolhido
+    const selectedServiceType = localStorage.getItem('selectedServiceType');
     const services = localStorage.getItem('services');
     
     if (selectedService && services) {
@@ -142,17 +161,8 @@ const PaymentPage = () => {
     }
     
     setBarber(selectedBarber);
-    setSelectedServiceType(selectedServiceType || null);
+    setServiceType(selectedServiceType); // Define o tipo de serviço
   }, []);
-
-  const handlePaymentChange = (method: string) => {
-    setPaymentMethod(method);
-    if (method === 'cartao') {
-      navigate('/credit-card'); // Redireciona para o formulário de cartão de crédito
-    } else if (method === 'pix') {
-      navigate('/pix-payment'); // Redireciona para a página de pagamento via Pix
-    }
-  };
 
   const handleBack = () => {
     navigate(-1);
@@ -160,30 +170,27 @@ const PaymentPage = () => {
 
   return (
     <Container>
-      <Title>Forma de Pagamento</Title>
-      <ServiceDetailsTable
-        service={service}
-        barber={barber}
-        selectedServiceType={selectedServiceType}
-      />
-      <Subtitle>Escolha a forma de pagamento</Subtitle>
-      <PaymentOption>
-        <PaymentButton
-          active={paymentMethod === 'cartao' || paymentMethod === null}
-          onClick={() => handlePaymentChange('cartao')}
-        >
-          Cartão
-        </PaymentButton>
-        <PaymentButton
-          active={paymentMethod === 'pix'}
-          onClick={() => handlePaymentChange('pix')}
-        >
-          Pix
-        </PaymentButton>
-      </PaymentOption>
-      <BackLink onClick={handleBack}>Voltar para a página anterior</BackLink>
+      <Title>Pagamento com Pix</Title>
+      {service && barber ? (
+        <>
+          <Subtitle>Detalhes do Serviço</Subtitle>
+          <PaymentDetails>
+            <ServiceDetailsTable
+              service={service}
+              selectedServiceType={serviceType} // Passa o tipo de serviço selecionado
+              barber={barber}
+            />
+            <DetailLine><strong>Chave Pix:</strong> exemplo@pix.com</DetailLine>
+            <DetailLine><strong>QR Code:</strong></DetailLine>
+            <img src="https://via.placeholder.com/150" alt="QR Code Pix" />
+          </PaymentDetails>
+          <BackLink onClick={handleBack}>Voltar para a página anterior</BackLink>
+        </>
+      ) : (
+        <p>Carregando informações...</p>
+      )}
     </Container>
   );
 };
 
-export default PaymentPage;
+export default PixPaymentPage;
