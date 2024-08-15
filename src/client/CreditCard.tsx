@@ -7,7 +7,7 @@ import BasicInput from '../components/BasicInput';
 import { useHookFormMask } from 'use-mask-input';
 import { device } from '../config/MediaQuery';
 import { useNavigate } from 'react-router-dom';
-import ServiceDetailsTable from './ServiceDetailsTable'; // Importe o ServiceDetailsTable
+import ServiceDetailsTable from './ServiceDetailsTable';
 
 // Estilos
 const Container = styled.div`
@@ -91,13 +91,26 @@ const BackButton = styled.button`
   }
 `;
 
+const DateTimeButton = styled.button`
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
 
-// Componente funcional CreditCard
-const CreditCard = () => {
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+// Componente funcional CardPage
+const CardPage = () => {
   const [focused, setFocused] = useState<Focused | undefined>(undefined);
-  const [service, setService] = useState<any>(null); // Ajustar o tipo conforme necessário
+  const [service, setService] = useState<any>(null);
   const [barber, setBarber] = useState<string | null>(null);
-  const [serviceType, setServiceType] = useState<string | null>(null); // Adiciona o estado para o tipo de serviço
+  const [serviceType, setServiceType] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const {
@@ -119,15 +132,15 @@ const CreditCard = () => {
     const selectedBarber = localStorage.getItem('selectedBarber');
     const selectedServiceType = localStorage.getItem('selectedServiceType');
     const services = localStorage.getItem('services');
-    
+
     if (selectedService && services) {
       const serviceList = JSON.parse(services) as any[];
       const foundService = serviceList.find((s: any) => s.name === selectedService);
       setService(foundService || null);
     }
-    
+
     setBarber(selectedBarber);
-    setServiceType(selectedServiceType); // Define o tipo de serviço
+    setServiceType(selectedServiceType);
   }, []);
 
   const handleInputFocus = (evt: FocusEvent<HTMLInputElement>) => {
@@ -135,7 +148,11 @@ const CreditCard = () => {
   };
 
   const handleBack = () => {
-    navigate(-1); // Volta para a página anterior
+    navigate(-1);
+  };
+
+  const handleDateTimeClick = () => {
+    navigate('/date-time'); // Navega para a página de escolha de data e hora
   };
 
   return (
@@ -143,10 +160,9 @@ const CreditCard = () => {
       <Title>Cartão</Title>
       {service && barber ? (
         <>
-
           <ServiceDetailsTable
             service={service}
-            selectedServiceType={serviceType} // Passa o tipo de serviço selecionado
+            selectedServiceType={serviceType}
             barber={barber}
           />
           <Cards
@@ -210,6 +226,7 @@ const CreditCard = () => {
 
             <SubmitButton type="submit">Confirmar</SubmitButton>
             <BackButton type="button" onClick={handleBack}>Voltar</BackButton>
+            <DateTimeButton type="button" onClick={handleDateTimeClick}>Escolha Data e Hora</DateTimeButton>
           </Form>
         </>
       ) : (
@@ -219,4 +236,4 @@ const CreditCard = () => {
   );
 };
 
-export default CreditCard;
+export default CardPage;

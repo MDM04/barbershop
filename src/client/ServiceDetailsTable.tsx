@@ -57,6 +57,10 @@ interface ServiceDetailsTableProps {
   service: {
     name: string;
     price: number;
+    priceMonthly?: number;
+    priceQuarterly?: number;
+    priceSemiannually?: number;
+    priceAnnually?: number;
   } | null;
   barber: string | null;
   selectedServiceType: string | null;
@@ -80,11 +84,28 @@ const ServiceDetailsTable: React.FC<ServiceDetailsTableProps> = ({ service, barb
     }
   };
 
+  const getServicePrice = (service: any, type: string | null) => {
+    switch (type) {
+      case 'daily':
+        return service.price.toFixed(2);
+      case 'monthly':
+        return service.priceMonthly ? service.priceMonthly.toFixed(2) : 'N/A';
+      case 'quarterly':
+        return service.priceQuarterly ? service.priceQuarterly.toFixed(2) : 'N/A';
+      case 'semiannually':
+        return service.priceSemiannually ? service.priceSemiannually.toFixed(2) : 'N/A';
+      case 'annually':
+        return service.priceAnnually ? service.priceAnnually.toFixed(2) : 'N/A';
+      default:
+        return 'N/A';
+    }
+  };
+
   return (
     service && barber ? (
       <ServiceDetails>
         <DetailLine><strong>Serviço:</strong> {service.name}</DetailLine>
-        <DetailLine><strong>Preço:</strong> R${service.price.toFixed(2)}</DetailLine>
+        <DetailLine><strong>Preço:</strong> R${getServicePrice(service, selectedServiceType)}</DetailLine>
         <DetailLine><strong>Barbeiro:</strong> {barber}</DetailLine>
         <DetailLine><strong>Plano escolhido:</strong> {selectedServiceType ? convertServiceType(selectedServiceType) : 'N/A'}</DetailLine>
       </ServiceDetails>

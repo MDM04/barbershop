@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery';
 import { useNavigate } from 'react-router-dom';
-import ServiceDetailsTable from './ServiceDetailsTable'; // Importe o ServiceDetailsTable
+import ServiceDetailsTable from './ServiceDetailsTable';
 
 // Estilos
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 20px;
   background: linear-gradient(135deg, #FFD700 0%, #FFFACD 50%, #FFD700 100%);
   min-height: 100vh;
@@ -55,10 +56,14 @@ const Title = styled.h1`
   }
 `;
 
-const Subtitle = styled.h2`
+const ToggleButton = styled.button`
   margin-top: 30px;
   font-size: 20px;
   color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 
   @media ${device.mobileS} {
     font-size: 18px;
@@ -74,6 +79,10 @@ const Subtitle = styled.h2`
 
   @media ${device.tablet} {
     font-size: 22px;
+  }
+
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -136,16 +145,31 @@ const BackLink = styled.a`
   }
 `;
 
+const DateTimeButton = styled.button`
+  margin-top: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
 // Interface
 interface ServiceDetailsType {
   name: string;
   price: number;
 }
 
-const PixPaymentPage = () => {
+const PixPage = () => {
   const [service, setService] = useState<ServiceDetailsType | null>(null);
   const [barber, setBarber] = useState<string | null>(null);
-  const [serviceType, setServiceType] = useState<string | null>(null); // Adiciona o estado para o tipo de serviço
+  const [serviceType, setServiceType] = useState<string | null>(null);
+  const [showTable, setShowTable] = useState(false); // Estado para controle da visibilidade da tabela
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -153,19 +177,27 @@ const PixPaymentPage = () => {
     const selectedBarber = localStorage.getItem('selectedBarber');
     const selectedServiceType = localStorage.getItem('selectedServiceType');
     const services = localStorage.getItem('services');
-    
+
     if (selectedService && services) {
       const serviceList = JSON.parse(services) as ServiceDetailsType[];
       const foundService = serviceList.find((s: ServiceDetailsType) => s.name === selectedService);
       setService(foundService || null);
     }
-    
+
     setBarber(selectedBarber);
-    setServiceType(selectedServiceType); // Define o tipo de serviço
+    setServiceType(selectedServiceType);
   }, []);
 
   const handleBack = () => {
     navigate(-1);
+  };
+
+  const handleDateTimeClick = () => {
+    navigate('/date-time'); // Navega para a página de escolha de data e hora
+  };
+
+  const handleToggleTable = () => {
+    setShowTable(prevState => !prevState); // Alterna a visibilidade da tabela
   };
 
   return (
@@ -173,17 +205,22 @@ const PixPaymentPage = () => {
       <Title>Pagamento com Pix</Title>
       {service && barber ? (
         <>
-          <Subtitle>Detalhes do Serviço</Subtitle>
-          <PaymentDetails>
+          <ToggleButton onClick={handleToggleTable}>
+            {showTable ? 'Ocultar Detalhes do Serviço' : 'Mostrar Detalhes do Serviço'}
+          </ToggleButton>
+          {showTable && (
             <ServiceDetailsTable
               service={service}
-              selectedServiceType={serviceType} // Passa o tipo de serviço selecionado
+              selectedServiceType={serviceType}
               barber={barber}
             />
+          )}
+          <PaymentDetails>
             <DetailLine><strong>Chave Pix:</strong> exemplo@pix.com</DetailLine>
             <DetailLine><strong>QR Code:</strong></DetailLine>
             <img src="https://via.placeholder.com/150" alt="QR Code Pix" />
           </PaymentDetails>
+          <DateTimeButton onClick={handleDateTimeClick}>Escolha Data e Hora</DateTimeButton>
           <BackLink onClick={handleBack}>Voltar para a página anterior</BackLink>
         </>
       ) : (
@@ -193,4 +230,4 @@ const PixPaymentPage = () => {
   );
 };
 
-export default PixPaymentPage;
+export default PixPage;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { device } from '../config/MediaQuery';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ const Container = styled.div`
 const MainTitle = styled.h1`
   font-size: 2rem;
   margin-bottom: 70px;
-  color:#007bff;
+  color: #007bff;
 
   @media ${device.mobileS} {
     font-size: 1.5rem;
@@ -46,22 +46,6 @@ const MainTitle = styled.h1`
   }
 `;
 
-const SubTitle = styled.h2`
-  font-size: 1.75rem;
-  margin-bottom: 50px;
-
-  @media ${device.mobileS} {
-    font-size: 1.25rem;
-  }
-
-  @media ${device.tablet} {
-    font-size: 1.35rem;
-  }
-
-  @media ${device.laptop} {
-    font-size: 1.55rem;
-  }
-`;
 
 const Form = styled.form`
   display: flex;
@@ -104,6 +88,17 @@ const TogglePassword = styled.div`
   cursor: pointer;
 `;
 
+const ErrorText = styled.p`
+  color: red;
+  font-size: 0.875rem;
+  margin: 10px 0;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+`;
+
+
 const LinkContainer = styled.div`
   margin-top: 15px;
   text-align: center;
@@ -120,40 +115,29 @@ const LinkContainer = styled.div`
   }
 `;
 
-const ErrorText = styled.p`
-  color: red;
-  font-size: 0.875rem;
-  margin: 10px 0;
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-`;
-
 interface FormInputs {
   username: string;
   password: string;
 }
 
-const LoginPage: React.FC = () => {
+const AdminLoginPage: React.FC = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>();
   const [showPassword, setShowPassword] = useState(false);
 
-  const storedUser = JSON.parse(localStorage.getItem('userData') || '{}');
+  const storedAdmin = JSON.parse(localStorage.getItem('adminData') || '{}');
 
   const onSubmit: SubmitHandler<FormInputs> = data => {
-    if (data.username === storedUser.username && data.password === storedUser.password) {
-      window.location.href = '/welcome';
+    if (data.username === storedAdmin.username && data.password === storedAdmin.password) {
+      window.location.href = '/admin/admin-home';
     } else {
       alert('Usuário ou senha inválidos.');
-      reset({username:'', password: ''}); // Reseta o formulário em caso de erro
+      reset({ username: '', password: '' });
     }
   };
 
   return (
     <Container>
-      <MainTitle>Avuá Barbearia</MainTitle>
-      <SubTitle>Login</SubTitle>
+      <MainTitle>Painel Administrativo</MainTitle>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <InputWrapper>
           <input 
@@ -175,13 +159,14 @@ const LoginPage: React.FC = () => {
           {errors.password && <ErrorText>Senha é obrigatória</ErrorText>}
         </InputWrapper>
         <button type="submit">Entrar</button>
+        <LinkContainer>
+        <Link to='/admin/admin-signup-page'>Cadastre-se</Link>
+        <Link to='/admin/admin-forgot-password'>Esqueci minha Senha</Link>
+
+        </LinkContainer>
       </Form>
-      <LinkContainer>
-        <Link to="/register">Cadastre-se aqui</Link>
-        <Link to="/forgot-password">Esqueci minha senha</Link>
-      </LinkContainer>
     </Container>
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;

@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 import { device } from '../config/MediaQuery'; // Supondo que você tenha um arquivo para device configurations
 import ServiceSelectionPage from './ServiceSelection';
+import { Link } from 'react-router-dom';
+
 
 // Estilos do container principal
 const Container = styled.div`
@@ -71,11 +73,14 @@ const WelcomePage = () => {
   // Obtém o nome do usuário do localStorage
   const userName = JSON.parse(localStorage.getItem('userData') || '{}').username;
 
+
+
   return (
     <Container>
       <UserGreeting>Olá,  {userName}</UserGreeting>
       <MainTitle>Bem-vindo</MainTitle>
       <ServiceSelectionPage/>
+      <Link to='/date-time-admin'> Admin Data</Link>
     </Container>
   );
 };

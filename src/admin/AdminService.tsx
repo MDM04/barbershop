@@ -35,27 +35,6 @@ const Container = styled.div`
   }
 `;
 
-// Estilos do título
-const Title = styled.h1`
-  margin-bottom: 20px;
-  font-size: 24px;
-
-  @media ${device.mobileS} {
-    font-size: 18px;
-  }
-
-  @media ${device.mobileM} {
-    font-size: 20px;
-  }
-
-  @media ${device.tablet} {
-    font-size: 22px;
-  }
-
-  @media ${device.laptop} {
-    font-size: 24px;
-  }
-`;
 
 // Estilos do container do formulário
 const FormContainer = styled.div`
@@ -278,7 +257,7 @@ interface Service {
   priceAnnually: number;
 }
 
-const AdminServicePage = () => {
+const AdminService = () => {
   // Estado para a lista de serviços
   const [services, setServices] = useState<Service[]>([]);
   // Estado para o novo serviço a ser adicionado
@@ -341,7 +320,6 @@ const AdminServicePage = () => {
 
   return (
     <Container>
-      <Title>Serviços</Title>
       <FormContainer>
         <Input
           type="text"
@@ -444,4 +422,4 @@ const AdminServicePage = () => {
   );
 };
 
-export default AdminServicePage;
+export default AdminService;

@@ -36,9 +36,10 @@ const Container = styled.div`
 
 // Estilos do título principal
 const MainTitle = styled.h1`
-  font-size: 4rem;
+  font-size: 7rem;
   margin-bottom: 40px;
-  color:  #007bff;
+  color:  #0e0f0f;
+  font-family: GreyQo-Regular;
 
   @media ${device.mobileS} {
     font-size: 1.5rem;
@@ -94,7 +95,7 @@ const HomePageClient = () => {
 
   return (
     <Container>
-      <MainTitle>Avuá Barbearia</MainTitle>
+      <MainTitle>A v u á  B a r b e a r i a</MainTitle>
       <SubTitle>
         <ReactTyped
           strings={['Considerada a melhor barbearia de corte INFANTIL em 2023...']}
@@ -106,6 +107,7 @@ const HomePageClient = () => {
         />
       </SubTitle>
       <ImageGallery images={images} />
+      <Button to="/admin/admin-welcome-page">Admin</Button>
       <Button to="/login">Ir para Login</Button>
     </Container>
   );

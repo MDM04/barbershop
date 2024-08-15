@@ -1,3 +1,4 @@
+// ServiceSelectionPage.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -121,7 +122,7 @@ const ServiceSelectionPage = () => {
   const [selectedService, setSelectedService] = useState<string>('');
   const [selectedServiceType, setSelectedServiceType] = useState<string>('');
   const [selectedBarber, setSelectedBarber] = useState<string>('');
-  const [showDetails, setShowDetails] = useState<boolean>(true);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
 

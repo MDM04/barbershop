@@ -10,6 +10,25 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+// Estilo para o título (h1)
+const Title = styled.h1`
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #141414;
+
+  @media ${device.mobileS} {
+    font-size: 1.5rem;
+  }
+
+  @media ${device.tablet} {
+    font-size: 1.75rem;
+  }
+
+  @media ${device.laptop} {
+    font-size: 2rem;
+  }
+`;
+
 // Wrapper para os inputs e botão
 const InputWrapper = styled.div`
   display: flex;
@@ -135,11 +154,12 @@ const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
   margin: 8px 0;
+  gap: 5px ;
 `;
 
 // Estilos dos labels dos radios
 const RadioLabel = styled.label`
-  margin-left: 8px;
+  margin: 8px;
   font-size: 14px;
 
   @media ${device.mobileS} {
@@ -228,7 +248,7 @@ const SelectBarbers = () => {
 
   return (
     <Container>
-      <h1>Barbeiros</h1>
+      <Title>Barbeiros</Title>
       <InputWrapper>
         <Input
           type="text"
@@ -247,7 +267,7 @@ const SelectBarbers = () => {
           checked={showTable}
           onChange={() => setShowTable(true)}
         />
-        <RadioLabel htmlFor="showTable">Mostrar Tabela</RadioLabel>
+        <RadioLabel htmlFor="showTable">Mostrar Tabela </RadioLabel>
         <input
           type="radio"
           id="hideTable"
@@ -255,7 +275,8 @@ const SelectBarbers = () => {
           checked={!showTable}
           onChange={() => setShowTable(false)}
         />
-        <RadioLabel htmlFor="hideTable">Ocultar Tabela</RadioLabel>
+
+        <RadioLabel htmlFor="hideTable"> Ocultar Tabela</RadioLabel>
       </RadioWrapper>
       {showTable && (
         <Table>

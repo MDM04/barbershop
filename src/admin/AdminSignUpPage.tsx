@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -131,7 +131,7 @@ interface FormInputs {
   confirmPassword: string;
 }
 
-const SignUpPage: React.FC = () => {
+const AdminSignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
@@ -151,7 +151,7 @@ const SignUpPage: React.FC = () => {
     setPasswordError('');
 
     // Salvar no localStorage
-    localStorage.setItem('userData', JSON.stringify(data));
+    localStorage.setItem('adminData', JSON.stringify(data));
 
     // Descomentar para enviar via axios
     /*
@@ -223,15 +223,6 @@ const SignUpPage: React.FC = () => {
 
         <InputWrapper>
           <Input
-            type="date"
-            placeholder="Data de Nascimento"
-            {...register('birthDate', { required: true })}
-          />
-          {errors.birthDate && <p>Data de nascimento é obrigatória</p>}
-        </InputWrapper>
-
-        <InputWrapper>
-          <Input
             type="text"
             placeholder="Usuário"
             {...register('username', { required: true })}
@@ -265,10 +256,10 @@ const SignUpPage: React.FC = () => {
         </InputWrapper>
 
         <Button type="submit" onClick={handleSubmit(onSubmit)}>Cadastrar</Button>
-        <LinkText to="/login">Já tem uma conta? Faça login</LinkText>
+        <LinkText to="/admin/admin-login">Já tem uma conta? Faça login</LinkText>
       </Forms>
     </Container>
   );
 };
 
-export default SignUpPage;
+export default AdminSignUpPage;
