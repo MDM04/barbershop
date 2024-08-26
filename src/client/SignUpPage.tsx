@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { device } from '../config/MediaQuery';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa ícones para mostrar/ocultar senha
+import axios from 'axios';
 
 // Estilos do formulário
 const Container = styled.div`
@@ -154,14 +155,14 @@ const SignUpPage: React.FC = () => {
     localStorage.setItem('userData', JSON.stringify(data));
 
     // Descomentar para enviar via axios
-    /*
+    
     try {
-      await axios.post('URL_DO_BACKEND', data);
+      await axios.post('http://localhost:5000/api/signup', data);
       setSuccessMessage('Cadastro realizado com sucesso!');
     } catch (error) {
       console.error('Erro ao cadastrar:', error);
     }
-    */
+    
 
     setSuccessMessage('Cadastro realizado com sucesso!');
   };
