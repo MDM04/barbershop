@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -137,12 +137,13 @@ const SignUpPage: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>({
     mode: 'onBlur'
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = async data => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     if (data.password !== data.confirmPassword) {
       setPasswordError('Senha e confirmação de senha não correspondem.');
       return;
@@ -151,33 +152,35 @@ const SignUpPage: React.FC = () => {
     // Limpar erro de senha se as senhas coincidem
     setPasswordError('');
 
-    // Salvar no localStorage
-    localStorage.setItem('userData', JSON.stringify(data));
-
-    // Descomentar para enviar via axios
-    
     try {
-      await axios.post('http://localhost:5000/api/signup', data);
-      setSuccessMessage('Cadastro realizado com sucesso!');
+      const response = await axios.post('http://localhost:5000/api/clients/signup', data);
+      if (response.status === 201) {
+        setSuccessMessage('Cadastro realizado com sucesso!');
+        setErrorMessage('');
+      } else {
+        setSuccessMessage('');
+        setErrorMessage('Cadastro realizado, mas com alguns problemas.');
+      }
     } catch (error) {
       console.error('Erro ao cadastrar:', error);
+      setSuccessMessage('');
+      setErrorMessage('Erro ao cadastrar. Tente novamente.');
     }
-    
-
-    setSuccessMessage('Cadastro realizado com sucesso!');
   };
 
   useEffect(() => {
     if (successMessage) {
       // Resetar o formulário após o sucesso
-      reset({ firstName: '',
+      reset({
+        firstName: '',
         lastName: '',
         phone: '',
         email: '',
         birthDate: '',
         username: '',
         password: '',
-        confirmPassword: '' });
+        confirmPassword: ''
+      });
     }
   }, [successMessage, reset]);
 
@@ -186,86 +189,88 @@ const SignUpPage: React.FC = () => {
       <MainTitle>Cadastre-se</MainTitle>
       <Forms>
         {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+        {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+        
         <InputWrapper>
           <Input
             type="text"
             placeholder="Nome"
-            {...register('firstName', { required: true })}
+            {...register('firstName', { required: 'Nome é obrigatório' })}
           />
-          {errors.firstName && <p>Nome é obrigatório</p>}
+          {errors.firstName && <ErrorText>{errors.firstName.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type="text"
             placeholder="Sobrenome"
-            {...register('lastName', { required: true })}
+            {...register('lastName', { required: 'Sobrenome é obrigatório' })}
           />
-          {errors.lastName && <p>Sobrenome é obrigatório</p>}
+          {errors.lastName && <ErrorText>{errors.lastName.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type="tel"
             placeholder="Telefone"
-            {...register('phone', { required: true })}
+            {...register('phone', { required: 'Telefone é obrigatório' })}
           />
-          {errors.phone && <p>Telefone é obrigatório</p>}
+          {errors.phone && <ErrorText>{errors.phone.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type="email"
             placeholder="Email"
-            {...register('email', { required: true })}
+            {...register('email', { required: 'Email é obrigatório' })}
           />
-          {errors.email && <p>Email é obrigatório</p>}
+          {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type="date"
             placeholder="Data de Nascimento"
-            {...register('birthDate', { required: true })}
+            {...register('birthDate', { required: 'Data de nascimento é obrigatória' })}
           />
-          {errors.birthDate && <p>Data de nascimento é obrigatória</p>}
+          {errors.birthDate && <ErrorText>{errors.birthDate.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type="text"
             placeholder="Usuário"
-            {...register('username', { required: true })}
+            {...register('username', { required: 'Usuário é obrigatório' })}
           />
-          {errors.username && <p>Usuário é obrigatório</p>}
+          {errors.username && <ErrorText>{errors.username.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type={showPassword ? 'text' : 'password'}
             placeholder="Senha"
-            {...register('password', { required: true })}
+            {...register('password', { required: 'Senha é obrigatória' })}
           />
           <TogglePassword onClick={() => setShowPassword(!showPassword)}>
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </TogglePassword>
-          {errors.password && <p>Senha é obrigatória</p>}
+          {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
         </InputWrapper>
 
         <InputWrapper>
           <Input
             type={showConfirmPassword ? 'text' : 'password'}
             placeholder="Confirme a Senha"
-            {...register('confirmPassword', { required: true })}
+            {...register('confirmPassword', { required: 'Confirmação de senha é obrigatória' })}
           />
           <TogglePassword onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
             {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
           </TogglePassword>
-          {errors.confirmPassword && <p>Confirmação de senha é obrigatória</p>}
+          {errors.confirmPassword && <ErrorText>{errors.confirmPassword.message}</ErrorText>}
           {passwordError && <ErrorText>{passwordError}</ErrorText>}
         </InputWrapper>
 
-        <Button type="submit" onClick={handleSubmit(onSubmit)}>Cadastrar</Button>
+        <Button type="button" onClick={handleSubmit(onSubmit)}>Cadastrar</Button>
         <LinkText to="/login">Já tem uma conta? Faça login</LinkText>
       </Forms>
     </Container>

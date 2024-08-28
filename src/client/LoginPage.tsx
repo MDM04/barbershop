@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { device } from '../config/MediaQuery';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -139,14 +140,19 @@ const LoginPage: React.FC = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>();
   const [showPassword, setShowPassword] = useState(false);
 
-  const storedUser = JSON.parse(localStorage.getItem('userData') || '{}');
-
-  const onSubmit: SubmitHandler<FormInputs> = data => {
-    if (data.username === storedUser.username && data.password === storedUser.password) {
-      window.location.href = '/welcome';
-    } else {
-      alert('Usuário ou senha inválidos.');
-      reset({username:'', password: ''}); // Reseta o formulário em caso de erro
+  const onSubmit: SubmitHandler<FormInputs> = async data => {
+    try {
+      const response = await axios.post('/api/clients/login', data);
+      if (response.data.success) {
+        window.location.href = '/welcome';
+      } else {
+        alert('Usuário ou senha inválidos.');
+        reset({ username: '', password: '' });
+      }
+    } catch (error) {
+      console.error('Erro ao tentar fazer login:', error);
+      alert('Erro ao tentar fazer login. Tente novamente.');
+      reset({ username: '', password: '' });
     }
   };
 
