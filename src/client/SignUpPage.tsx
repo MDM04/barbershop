@@ -153,7 +153,8 @@ const SignUpPage: React.FC = () => {
     setPasswordError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/clients/signup', data);
+      console.log(data)
+      const response = await axios.post('http://localhost:1300/api/clients/signup', data);
       if (response.status === 201) {
         setSuccessMessage('Cadastro realizado com sucesso!');
         setErrorMessage('');

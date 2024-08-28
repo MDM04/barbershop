@@ -132,7 +132,7 @@ const InputWrapper = styled.div`
 `;
 
 interface FormInputs {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -142,17 +142,17 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async data => {
     try {
-      const response = await axios.post('/api/clients/login', data);
+      console.log(data)
+      const response = await axios.post('http://localhost:1300/api/clients/login', data);
       if (response.data.success) {
         window.location.href = '/welcome';
       } else {
-        alert('Usuário ou senha inválidos.');
-        reset({ username: '', password: '' });
+        reset({ email: '', password: '' });
       }
     } catch (error) {
       console.error('Erro ao tentar fazer login:', error);
       alert('Erro ao tentar fazer login. Tente novamente.');
-      reset({ username: '', password: '' });
+      reset({ email: '', password: '' });
     }
   };
 
@@ -164,10 +164,10 @@ const LoginPage: React.FC = () => {
         <InputWrapper>
           <input 
             type="text" 
-            placeholder="Usuário" 
-            {...register('username', { required: true })} 
+            placeholder="Email" 
+            {...register('email', { required: true })} 
           />
-          {errors.username && <ErrorText>Usuário é obrigatório</ErrorText>}
+          {errors.email && <ErrorText>email é obrigatório</ErrorText>}
         </InputWrapper>
         <InputWrapper>
           <input 
