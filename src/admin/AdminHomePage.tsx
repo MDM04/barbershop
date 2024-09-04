@@ -95,7 +95,7 @@ const AdminHomePage = () => {
         <NavButton to="/admin/admin-barbers">Barbeiros</NavButton>
         <NavButton to="/admin/admin-services">Serviços</NavButton>
         <NavButton to="/admin/admin-birthday">Aniversários</NavButton>
-        <NavButton to="/admin/admin-birthday">Agendar</NavButton>
+        <NavButton to="/admin/admin-image">Imagens</NavButton>
       </Navbar>
     </Container>
   );

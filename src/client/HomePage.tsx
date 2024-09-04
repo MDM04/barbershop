@@ -108,7 +108,8 @@ const HomePageClient = () => {
       </SubTitle>
       <ImageGallery images={images} />
       <Button to="/admin/admin-welcome-page">Admin</Button>
-      <Button to="/login">Ir para Login</Button>
+      / * colocar /login depois de fazer os testes com os compoenent novos */ 
+      <Button to="/welcome">Ir para Login</Button>
     </Container>
   );
 };

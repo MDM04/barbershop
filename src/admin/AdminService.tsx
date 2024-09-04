@@ -62,11 +62,13 @@ const Input = styled.input`
   @media ${device.mobileS} {
     font-size: 12px;
     height: 38px;
+    max-width: 80%;
   }
 
   @media ${device.mobileM} {
     font-size: 12px;
     height: 40px;
+    max-width: 90%;
   }
 
   @media ${device.mobileL} {

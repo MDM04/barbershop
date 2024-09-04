@@ -8,6 +8,7 @@ import AdminSchedulingPage from "../admin/AdminScheduling"
 import AdminBarbersPage from "../admin/AdminBarbersPage"
 import AdminServicesPage from "../admin/AdminServicePage"
 import AdminAnniversaryPage from "../admin/AdminAnniversaryPage"
+import AdminImage from "../admin/AdminImage"
 
 const AdminRoutes = () =>{
     return(
@@ -21,6 +22,8 @@ const AdminRoutes = () =>{
             <Route path="/admin-barbers" element={<AdminBarbersPage />} />
             <Route path="/admin-services" element={<AdminServicesPage />} />
             <Route path="/admin-birthday" element={<AdminAnniversaryPage />} />
+            <Route path="/admin-image" element={<AdminImage />} />
+
 
 
 
