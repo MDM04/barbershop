@@ -9,11 +9,13 @@ import PaymentPage from "../client/PaymentPage";
 import DateTimePage from "../client/DateTime";
 import CreditCard from "../client/CreditCard"
 import PixPaymentPage from "../client/PixPaymentPage"
+import Header from "../components/Header";
 
 const ClientRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePageClient />} />
+     <Route path="/" element={<Header/>} >
+     <Route path="/" element={<HomePageClient />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<SignUpPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -23,6 +25,7 @@ const ClientRoutes = () => {
       <Route path="/credit-card" element={<CreditCard  />} />
       <Route path="/pix-payment" element={<PixPaymentPage />} />
       <Route path="/date-time" element={<DateTimePage />} />
+     </Route>
     </Routes>
   );
 };

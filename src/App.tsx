@@ -1,10 +1,10 @@
-import Routers from "./router/router"
+import {AppRoutes} from "./router/router"
 
 
 const App =()=>{
   return (
     <div>
-      <Routers/>
+      <AppRoutes/>
     </div>
   )
 }

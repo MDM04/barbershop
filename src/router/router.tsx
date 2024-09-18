@@ -2,7 +2,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ClientRoutes from "./ClientRoutes"; // Rotas do cliente
 import AdminRoutes from "./AdminRoutes";   // Rotas do administrador
 
-const AppRoutes = () => {
+export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -16,4 +16,3 @@ const AppRoutes = () => {
   );
 };
 
-export default AppRoutes;

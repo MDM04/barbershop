@@ -40,6 +40,8 @@ const MainTitle = styled.h1`
   margin-bottom: 40px;
   color:  #0e0f0f;
   font-family: GreyQo-Regular;
+  letter-spacing: 2px;
+  word-spacing:20px;
 
   @media ${device.mobileS} {
     font-size: 1.5rem;
@@ -95,7 +97,7 @@ const HomePageClient = () => {
 
   return (
     <Container>
-      <MainTitle>A v u á  B a r b e a r i a</MainTitle>
+      <MainTitle>{` Seu Zé  Barbearia`}</MainTitle>
       <SubTitle>
         <ReactTyped
           strings={['Considerada a melhor barbearia de corte INFANTIL em 2023...']}

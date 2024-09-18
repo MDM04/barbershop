@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ContactLink from "./ContactLink";
 import { device } from "../config/MediaQuery";
+import { Outlet } from "react-router-dom";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -79,14 +80,13 @@ const Contacts = styled.div`
   }
 `;
 
-interface IHeaderProps {
-  title: string;
-}
 
-const Header = ({ title }: IHeaderProps) => {
+
+const Header = () => {
   return (
-    <HeaderContainer>
-      <Title>{title}</Title>
+   <div>
+     <HeaderContainer>
+      <Title> Bem Vindo !!!</Title>
       <Contacts>
         <ContactLink
           description="Instagram"
@@ -102,6 +102,8 @@ const Header = ({ title }: IHeaderProps) => {
         />
       </Contacts>
     </HeaderContainer>
+    <Outlet/>
+   </div>
   );
 };
 

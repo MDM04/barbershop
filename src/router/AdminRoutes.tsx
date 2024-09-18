@@ -23,12 +23,6 @@ const AdminRoutes = () =>{
             <Route path="/admin-services" element={<AdminServicesPage />} />
             <Route path="/admin-birthday" element={<AdminAnniversaryPage />} />
             <Route path="/admin-image" element={<AdminImage />} />
-
-
-
-
-
-
         </Routes>
     )
 }
